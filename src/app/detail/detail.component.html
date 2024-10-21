@@ -1,0 +1,12 @@
+<div *ngIf="product" class="card mt-4">
+    <div class="card-header">
+      <h2>{{ product.name }}</h2>
+    </div>
+    <div class="card-body">
+      <img [src]="product.img[0]" alt="{{ product.name }}" class="img-fluid mb-3"/>
+      <p class="card-text"><strong>Price:</strong> {{ product.prix }} USD</p>
+      <p class="card-text"><strong>Stock:</strong> {{ product.quantite }}</p>
+      <button class="btn btn-secondary" (click)="closeDetails()">Close</button>
+    </div>
+  </div>
+  

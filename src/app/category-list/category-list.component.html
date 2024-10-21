@@ -1,0 +1,13 @@
+<div class="category-list container">
+    <div class="row">
+      <ul class="list-group col-12">
+        <li class="list-group-item list-group-item-action" (click)="onCategorySelect('')">
+        All Products
+        </li>
+        <li *ngFor="let category of categories" class="list-group-item list-group-item-action" (click)="onCategorySelect(category.name)">
+          {{ category.name | titlecase }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  

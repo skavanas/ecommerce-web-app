@@ -1,0 +1,11 @@
+<div class="card h-100 shadow-sm">
+    <img [src]="product.img" alt="{{ product.name }}" class="card-img-top">
+    <div class="card-body">
+      <h3 class="card-title">{{ product.name }}</h3>
+      <p class="card-text">Price: <span class="fw-bold text-primary">${{ product.prix }}</span></p>
+      <button type="button" (click)="selectProduct()" class="btn btn-dark">Select Product</button>
+    <div>
+<div class="card-footer">
+        <p>Quantite restante {{product.quantite}} </p>
+        <span class="" [ngStyle]="{color: getcolor()}">{{getstate()}}</span>
+</div>
