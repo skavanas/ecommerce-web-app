@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { product } from '../module/product';
 import { CommonModule } from '@angular/common';
+import { ProductserviceService } from '../productservice.service';
 
 @Component({
   selector: 'app-detail',
@@ -10,10 +10,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './detail.component.css'
 })
 export class DetailComponent {
-  @Input() product!: product;  // Selected product to display
+   product!: any;  // Selected product to display
 
-  constructor() {}
 
+  constructor(private service:ProductserviceService) {}
+  ngOnInit(){
+    this.showproduct()
+  }
+  showproduct(){
+    this.service.emitProduct$.subscribe((p)=>this.product=p)
+  }
+  
   closeDetails() {
     // Emit event or clear the product (handled by parent component)
   }

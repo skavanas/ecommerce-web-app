@@ -3,7 +3,8 @@
     <div class="card-body">
       <h3 class="card-title">{{ product.name }}</h3>
       <p class="card-text">Price: <span class="fw-bold text-primary">${{ product.prix }}</span></p>
-      <button type="button" (click)="selectProduct()" class="btn btn-dark">Select Product</button>
+      <button type="button"  (click)="showp()" [routerLink]="['/details', product.name]"class="btn btn-dark">View more</button>
+      <button type="button"  (click)="addpanier()" class="btn btn-dark">Add To cart</button>
     <div>
 <div class="card-footer">
         <p>Quantite restante {{product.quantite}} </p>

@@ -1,68 +1,77 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component,  Input, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductserviceService } from '../productservice.service';
 import { HttpClientModule } from '@angular/common/http';
 import { product } from '../module/product';
 import { DetailComponent } from '../detail/detail.component';
+import { NavbarService } from '../navbar.service';
 
 @Component({
   selector: 'app-productlist',
   standalone: true,
-  imports: [CommonModule, ProductItemComponent, HttpClientModule,DetailComponent],
+  imports: [CommonModule, ProductItemComponent, HttpClientModule, DetailComponent],
   templateUrl: './productlist.component.html',
   styleUrls: ['./productlist.component.css']
 })
 export class ProductlistComponent implements OnInit {
   products: product[] = [];
-  selectedProduct?: product;
+ 
   @Input() category!: string; 
   @Input() searchTerm: string = ''; 
-
-  constructor(private service: ProductserviceService) {}
-
+  
+  constructor(private service: ProductserviceService, private servicen: NavbarService) {}
+  
   ngOnInit(): void {
-    this.fetchAllProducts(); // Charger tous les produits à l'initialisation
+    this.fetchAllProducts();  // Fetch all products initially
+    this.subscribeToSearch(); // Subscribe to search term changes
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // Vérifier si la catégorie a changé
-    if (changes['category'] && changes['category'].currentValue) {
-      this.fetchProductsByCategory(changes['category'].currentValue);
-    } else if (!this.category) {
-      // Si aucune catégorie n'est sélectionnée, récupérer tous les produits
-      this.fetchAllProducts();
-    }
-
-    // Appliquer le filtrage des produits en fonction du terme de recherche
-    if (changes['searchTerm'] && this.products.length > 0) {
-      this.filterProducts();
-    }
-  }
-
-  // Récupérer les produits par catégorie
-  private fetchProductsByCategory(category: string) {
-    this.service.getProductsByCategory(category).subscribe((data: any) => {
-      this.products = data.products.map(
-        (item: any) =>
-          new product(item.title, item.images[0], item.price, item.stock)
-      );
-      this.filterProducts(); // Appliquer le filtrage après chargement
+  // Subscription to search term changes from NavbarService
+  private subscribeToSearch() {
+    this.servicen.emitsearch.subscribe((search: string) => {
+      if (search) {
+        this.searchTerm = search; // Update searchTerm and filter products
+        this.filterProducts();
+      } else {
+        this.fetchAllProducts(); // Refetch all products if search is cleared
+      }
     });
   }
 
-  // Récupérer tous les produits
+  ngOnChanges(changes: SimpleChanges) {
+    // Check if the category has changed
+    if (changes['category'] && changes['category'].currentValue) {
+      this.fetchProductsByCategory(changes['category'].currentValue);
+    } else if (!this.category) {
+      this.fetchAllProducts();
+    }
+  }
+
+  // Fetch products by category
+  private fetchProductsByCategory(category: string) {
+    this.service.getProductsByCategory(category).subscribe((data: any) => {
+      this.products = data.products.map(
+
+        (item: any) =>
+          new product(item.title, item.images[0], item.price, item.stock)
+      );
+      this.filterProducts(); // Apply filtering after loading
+    });
+  }
+
+  // Fetch all products
   private fetchAllProducts() {
     this.service.getproducts().subscribe((data: any) => {
       this.products = data.products.map(
         (item: any) =>
           new product(item.title, item.images[0], item.price, item.stock)
       );
-      this.filterProducts(); // Appliquer le filtrage après chargement
+      this.filterProducts(); // Apply filtering after loading
     });
   }
 
-  // Filtrer les produits en fonction du terme de recherche
+  // Filter products based on search term
   private filterProducts() {
     if (this.searchTerm) {
       this.products = this.products.filter((product) =>
@@ -70,12 +79,4 @@ export class ProductlistComponent implements OnInit {
       );
     }
   }
-  onProductSelected(product: product) {
-    this.selectedProduct = product;  
-  }
-
-  closeDetails() {
-    this.selectedProduct = undefined;  
-  }
-  
 }

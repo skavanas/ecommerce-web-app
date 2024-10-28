@@ -1,1 +1,54 @@
-<p>panier works!</p>
+<div class="container my-5">
+    <h2 class="mb-4">Votre Panier</h2>
+
+    <!-- Vérifier si le panier est vide -->
+    <div *ngIf="cartProducts.length === 0" class="alert alert-warning">
+        Votre panier est vide.
+    </div>
+
+    <!-- Tableau des produits -->
+    <div *ngIf="cartProducts.length > 0" class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Prix Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of cartProducts">
+                    <td>{{ product.name }}</td>
+                    <td>
+                        <input type="number" class="form-control" [(ngModel)]="product.quantite" min="1">
+                    </td>
+                    <td>{{ product.prix | currency:'USD' }}</td>
+                    <td>{{ (product.prix * product.quantite) | currency:'USD' }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="removeFromCart(product)">Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Résumé du panier -->
+    <div *ngIf="cartProducts.length > 0" class="row mt-4">
+        <div class="col-md-6 offset-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Résumé du Panier</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total</span>
+                            <strong>{{ getTotalCost() | currency:'USD' }}</strong>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary btn-lg w-100 mt-3">Passer à la caisse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

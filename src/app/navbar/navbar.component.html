@@ -7,27 +7,35 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/home">Home </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" >Features</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
+          <a class="nav-link" >Pricing</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" >About</a>
         </li>
         <form class="form-inline my-2 my-lg-0 d-flex ms-auto">
-          <input class="form-control me-2"  (input)="onSearchChange($event)"  type="search"  placeholder="Search" aria-label="Search">
+          <input class="form-control me-2"  (input)="change(search)" [(ngModel)]="search" name="first"  type="search"  placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <li class="nav-item ms-auto position-absolute end-0 pe-3">
-              <a class="nav-link" href="#">
-                <i class="bi bi-cart"></i> Cart
-                <span class="badge bg-danger">3</span> 
-              </a>
+        <li class="nav-item ms-auto position-relative">
+          <a class="nav-link" routerLink="panier" >
+            <i class="bi bi-cart"></i> Cart
+            <span class="badge bg-danger">{{ cartProducts.length }}</span> 
+          </a>
         </li>
+
+        <div class="d-flex ms-auto">
+      <button class="btn btn-primary me-2" routerLink="/signup">Sign Up</button>
+      <button class="btn btn-primary" routerLink="/login">Log In</button>
+        </div>
+        
+        
+       
       </ul>
     </div>
   </nav>
