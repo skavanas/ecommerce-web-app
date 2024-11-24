@@ -3,25 +3,27 @@ import { product } from '../module/product';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PanierService } from '../panier.service';
+import { CommandeService } from '../commande.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-panier',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,RouterLink],
   templateUrl: './panier.component.html',
   styleUrl: './panier.component.css'
 })
 export class PanierComponent {
- 
+  
   cartProducts: product[] = [];
-  constructor(private service: PanierService){}
-  addpanier(){
-    this.service.emitProduct$.subscribe((product) => {
-      if (product) { // Check that product is not null
-        this.cartProducts.push(product);
-        console.log('Adding product:', product);
-
-      }
+  constructor(private service: PanierService,private service1:CommandeService){}
+  confirmer(){
+    this.service1.confirmeOrder(this.cartProducts)
+  }
+  addpanier() {
+    this.service.emitProduct$.subscribe((products: product[]) => {
+      this.cartProducts = products; // Update cartProducts with the latest array from the service
+      console.log('Cart products:', this.cartProducts); // Log the current cart products
     });
   }
   getTotalCost(): number {

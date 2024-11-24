@@ -6,12 +6,15 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PanierService {
-  private productSubject = new BehaviorSubject<product | null>(null); 
+  private cartProducts: product[] = []; // Array to hold products
+  private productSubject = new BehaviorSubject<product[]>(this.cartProducts); 
   emitProduct$ = this.productSubject.asObservable();
 
   addpanier(product: product) {
-    this.productSubject.next(product);
+    this.cartProducts.push(product); // Add new product to the cart array
+    this.productSubject.next(this.cartProducts); // Emit the updated cart
   }
+
 
   constructor() { }
 }

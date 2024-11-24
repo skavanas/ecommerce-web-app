@@ -7,6 +7,7 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { DetailComponent } from './detail/detail.component';
 import { PanierComponent } from './panier/panier.component';
 import { SignupComponent } from './signup/signup.component';
+import { FirebaseService } from './firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { SignupComponent } from './signup/signup.component';
 })
 export class AppComponent {
   title = 'app';
-  
+  constructor(private firebaseService: FirebaseService) {
+  }
   
 }

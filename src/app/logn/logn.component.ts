@@ -1,25 +1,31 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FirebaseService } from '../firebase.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-logn',
+  standalone: true,
+  imports:[CommonModule,FormsModule],
   templateUrl: './logn.component.html',
-  styleUrls: ['./logn.component.css']
+  styleUrl: './logn.component.css'
+  
 })
 export class LognComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private firebaseService: FirebaseService, private router: Router) {}
 
-  onLoginSubmit() {
-    // Ajouter ici la logique de validation pour l'authentification.
-    if (this.email && this.password) {
-      // Simuler un login réussi
-      console.log('Login successful');
-      this.router.navigate(['/home']); // Rediriger vers la page d'accueil après le login
-    } else {
-      console.log('Invalid email or password');
+  async onLogin() {
+    try {
+      await this.firebaseService.signIn(this.email, this.password);
+      alert('Logged in successfully');
+      this.router.navigate(['/home']);
+    } catch (error: any) {
+      console.error('Login error', error);
+      alert(error.message || 'An unknown error occurred.');
     }
   }
 }
